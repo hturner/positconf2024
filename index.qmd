@@ -595,9 +595,11 @@ Reviewing bug reports can help them progress to being closed
 :::
 :::
 
-##  {#qr data-menu-title="QR code"}
+#  {#qr data-menu-title="QR code" .center-h}
 
-QR code to this presentation
+![](qrcode.png){width="500px" height="500px"}
+
+<https://hturner.github.io/positconf2024>
 
 ## Links
 
