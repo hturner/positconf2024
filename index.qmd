@@ -1,0 +1,688 @@
+---
+title: "Contributing to the R Project"
+author: Heather Turner
+date: 13 August 2024
+date-format: long
+format: 
+  warwickpres-revealjs: 
+    width: 1280
+    height: 720
+    keep-md: false
+    embed-resources: true
+---
+
+##  {#opening data-menu-title="Opening"}
+
+```{css, echo = FALSE}
+.col-box1 {
+  border-radius: 25px;
+  background: #C4EBE4;
+  padding: 20px;
+  box-sizing: border-box;
+  height: 450px;
+}
+.col-box2 {
+  border-radius: 25px;
+  background: #E9AEB0;
+  padding: 20px;
+  box-sizing: border-box;
+  height: 450px;
+}
+.col-box3 {
+  border-radius: 25px;
+  background: #B19FBA;
+  padding: 20px;
+  box-sizing: border-box;
+  height: 450px;
+}
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(colorspace)
+library(fontawesome)
+library(grid)
+library(png)
+```
+
+::: columns
+::: {.column .center-h width="50%"}
+<img src="2009-final-pyramid-clipped.jpg" alt="Human pyramid on waterskis" style="width:75%"/></br> [<https://www.flickr.com/photos/aquaducks/3708806908/>]{.smaller60}
+:::
+
+::: {.column .center-h width="50%"}
+::: fragment
+<img src="dependency.png" title="Someday ImageMagick will finally break for good and we&apos;ll have a long period of scrambling as we try to reassemble civilization from the rubble." alt="Dependency" style="width:75%"/></br> [<https://xkcd.com/2347>]{.smaller60}
+:::
+:::
+:::
+
+::: notes
+R is maintained and developed under "The R Project"
+
+Any time we use R or Python, we are relying on a core codebase that needs to be maintained
+
+What can we do to ensure that base R is sustainable for the long term? Look at in context of R
+:::
+
+## The R Project
+
+::: r-stack
+```{r, dev.args = list(bg = "transparent"), out.width="100%"}
+pal <- palette.colors(n = 4, palette = "Okabe-Ito")
+grid.newpage()
+vp <- viewport(x = 0.1, y = 0.1, width=.6, height=.8, just = c("left", "bottom"))
+pushViewport(vp)
+grid.rect(0, 0, width = 1, height = 0.1,
+          hjust = 0, vjust = 0, gp=gpar(col=NA, fill=pal[1]))
+grid.text("Core Developers", 0.5, 0.05, gp = gpar(col="white", fontsize=20, fontface="bold"))
+grid.rect(0, 0.1, width = 1, height = 0.2,
+          hjust = 0, vjust = 0, gp=gpar(col=NA, fill=pal[2]))
+grid.text("Contributors", 0.5, 0.2, gp = gpar(col="white", fontsize=20, fontface="bold"))
+grid.rect(0, 0.3, width = 1, height = 0.7,
+          hjust = 0, vjust = 0, gp=gpar(col=NA, fill=pal[3]))
+grid.text("General Community", 0.5, 0.6, gp = gpar(col="white", fontsize=20, fontface="bold"))
+popViewport()
+```
+
+::: fragment
+```{r, dev.args = list(bg = "transparent"), out.width="100%"}
+vp <- viewport(x = 0.75, y = 0.2, width=.2, height=.6, just = c("left", "bottom"))
+pushViewport(vp)
+grid.rect(x = 0.5, y = 1, width = 0.4, height = 0.9, 
+          just = c("center", "top"),
+          #vjust = "top",
+          gp = gpar(col=pal[4], fill = pal[4]))
+grid.polygon(c(0.5, 0, 1), c(0, 0.2, 0.2),
+             gp = gpar(col=pal[4], fill = pal[4]))
+popViewport()
+```
+:::
+:::
+
+## Why should you care?
+
+::: {columns}
+::: {.column .fragment .center-h .col-box1 width="32%"}
+[`r emo::ji("star2")`]{.larger200}
+
+-   R is special
+    -   Statistical methods
+    -   Full data pipeline
+    -   User-friendly
+    -   Community
+:::
+
+::: {.column .fragment .center-h .col-box2 width="32%"}
+[`r emo::ji("toolbox")`]{.larger200}
+
+-   You use it!
+    -   Tidyverse, Shiny, ...
+    -   Time and money invested in skills and code
+:::
+
+::: {.column .fragment .center-h .col-box3 width="32%"}
+[`r emo::ji("exclamation_mark")`]{.larger200}
+
+-   R needs your help!
+    -   $>$ 600 bugs
+    -   Demographic cliff
+    -   Lack of diversity
+:::
+:::
+
+::: notes
+```         
+-   State-of the-art statistical methods
+-   Covers full data pipeline
+-   User-friendly programming language
+-   Enthusiastic community
+
+- All R packages, e.g. tidyverse, Shiny depend on base R
+- Developing skills and scripts takes time and money
+
+    - Many R Core developers are near the end of their careers 
+- The R Core Team is not so diverse
+```
+:::
+
+## Why do I care?
+
+::: r-stack
+```{r career-timeline, out.width = "100%"}
+grid.newpage()
+grid.lines(x = c(0,1), y = c(0.5, 0.5), 
+           gp = gpar(lwd = 6))
+x <- (2 + 1)/30
+grid.lines(x = c(x, x), y = c(0.5, 0.6), 
+           gp = gpar(lwd = 6))
+grid.text("2001", x = x, y = 0.65, 
+          gp = gpar(fontsize = 20, fontface=2))
+img <- readPNG("Rlogo.png")
+grid.raster(img, x = x, y = 0.75, height = 0.1)
+grid.text("R user", x = x, y = 0.85, 
+          gp = gpar(fontsize = 20, fontface=2))
+x <- (2 + 4)/30
+grid.lines(x = c(x, x), y = c(0.5, 0.4), 
+           gp = gpar(lwd = 6))
+grid.text("2004", x = x, y = 0.35, 
+          gp = gpar(fontsize = 20, fontface=2))
+img <- readPNG("warwick_logo_old.png")
+grid.raster(img, x = x, y = 0.25, height = 0.1)
+grid.text("Researcher", x = x, y = 0.15, 
+          gp = gpar(fontsize = 20, fontface=2))
+x <- (2 + 10)/30
+grid.lines(x = c(x, x), y = c(0.5, 0.6), 
+           gp = gpar(lwd = 6))
+grid.text("2010", x = x, y = 0.65, 
+          gp = gpar(fontsize = 20, fontface=2))
+img <- readPNG("pfizer_freelance.png")
+grid.raster(img, x = x, y = 0.75, height = 0.1)
+grid.text("Pharma / freelance", x = x, y = 0.85, 
+          gp = gpar(fontsize = 20, fontface=2))
+x <- (2 + 21)/30
+grid.lines(x = c((2 + 21)/30,(2 + 21)/30), y = c(0.5, 0.4), 
+           gp = gpar(lwd = 6))
+grid.text("2021", x = x, y = 0.35, 
+          gp = gpar(fontsize = 20, fontface=2))
+img <- readPNG("warwick_logo_new.png")
+grid.raster(img, x = x, y = 0.25, height = 0.15)
+grid.text("Research software\nengineer", x = x, y = 0.12, 
+          gp = gpar(fontsize = 20, fontface=2))
+```
+
+::: fragment
+```{r community-timeline, out.width = "100%"}
+grid.newpage()
+grid.lines(x = c(0,1), y = c(0.5, 0.5), 
+           gp = gpar(lwd = 6))
+x <- (0 + 4)/24
+grid.lines(x = c(x, x), y = c(0.5, 0.6), 
+           gp = gpar(lwd = 6))
+grid.text("2004", x = x, y = 0.65, 
+          gp = gpar(fontsize = 20, fontface=2))
+img <- readPNG("leverage_cropped.png")
+grid.raster(img, x = x, y = 0.75, height = 0.1)
+grid.text("1st base R\ncontribution", x = x, y = 0.9, 
+          gp = gpar(fontsize = 20, fontface=2))
+x <- (0 + 5)/24
+grid.lines(x = c(x, x), y = c(0.5, 0.4), 
+           gp = gpar(lwd = 6))
+grid.text("2005", x = x, y = 0.35, 
+          gp = gpar(fontsize = 20, fontface=2))
+img <- readPNG("parcel.png")
+grid.raster(img, x = x, y = 0.25, height = 0.1)
+grid.text("1st CRAN\npackage", x = x, y = 0.1, 
+          gp = gpar(fontsize = 20, fontface=2))
+x <- (0 + 15)/24
+grid.lines(x = c(x, x), y = c(0.5, 0.6), 
+           gp = gpar(lwd = 6))
+grid.text("2015", x = x, y = 0.65, 
+          gp = gpar(fontsize = 20, fontface=2))
+img <- readPNG("Rlogo.png")
+grid.raster(img, x = x, y = 0.75, height = 0.1)
+grid.text("R Foundation\nmember", x = x, y = 0.9, 
+          gp = gpar(fontsize = 20, fontface=2))
+x <- (0 + 15)/24
+grid.lines(x = c(x, x), y = c(0.5, 0.4), 
+           gp = gpar(lwd = 6))
+grid.text("2015", x = x, y = 0.35, 
+          gp = gpar(fontsize = 20, fontface=2))
+img <- readPNG("forwards_cropped.png")
+grid.raster(img, x = x, y = 0.25, height = 0.1)
+grid.text("Forwards", x = x, y = 0.15, 
+          gp = gpar(fontsize = 20, fontface=2))
+x <- (0 + 20)/24
+grid.lines(x = c(x, x), y = c(0.5, 0.6), 
+           gp = gpar(lwd = 6))
+#Saranjeet's image (or part of it)
+grid.text("2020", x = x, y = 0.65, 
+          gp = gpar(fontsize = 20, fontface=2))
+img <- readPNG("r_dev_guide_new.png")
+grid.raster(img, x = x, y = 0.75, height = 0.1)
+grid.text("R Contribution\nWorking Group", x = x, y = 0.9, 
+          gp = gpar(fontsize = 20, fontface=2))
+```
+:::
+:::
+
+::: notes
+Learnt R because supervisors said R is the future!
+
+First contribution = bug report with simple fix to R code - [did make a couple of false bug reports before then - [mentored by supervisor to submit such things...
+
+Throughout career R has been fundamental to my work
+
+Through community work have become more aware of the fragility of the project and the gap between the developer community and the wider R community leading to RSE Fellowship
+
+If use timeline, could briefly highlight \* Program Committee useR! 2008 \* Associate Editor R Journal 2009
+:::
+
+## What does it take to contribute?
+
+<br><br>
+
+::: columns
+::: {.column width="33%"}
+::: center-h
+```{r}
+fa(name = "award", fill = "black", height = "200px")
+```
+
+Skill
+:::
+:::
+
+::: {.column width="33%"}
+::: center-h
+```{r}
+fa(name = "clock", fill = "black", height = "200px")
+```
+
+Time
+:::
+:::
+
+::: {.column width="33%"}
+::: center-h
+```{r}
+fa(name = "dollar-sign", fill = "black", height = "200px")
+```
+
+Money
+:::
+:::
+:::
+
+# Contributing to the codebase
+
+## Not Just R Code!
+
+<br>
+
+The codebase of R includes
+
+::: incremental
+-   Text (Messages, Warnings, Errors)
+-   Documentation (Rd, texinfo)
+-   Code (R, C, Fortran, bash)
+:::
+
+## Translating Text via Weblate
+
+::: columns
+::: {.column .center-h width="33%"}
+`r fa(name = "award", fill = "black")` `r fa(name = "award", fill = "lightgrey")` `r fa(name = "award", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "clock", fill = "black")` `r fa(name = "clock", fill = "lightgrey")` `r fa(name = "clock", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "dollar-sign", fill = "lightgrey")` `r fa(name = "dollar-sign", fill = "lightgrey")` `r fa(name = "dollar-sign", fill = "lightgrey")`
+:::
+:::
+
+::: center-h
+![](weblate_example.png){width="70%"}
+:::
+
+<https://youtu.be/ABdyZW8yGS4>
+
+## Contributing to Documentation via GitHub
+
+::: columns
+::: {.column .center-h width="33%"}
+`r fa(name = "award", fill = "black")` `r fa(name = "award", fill = "lightgrey")` `r fa(name = "award", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "clock", fill = "black")` `r fa(name = "clock", fill = "lightgrey")` `r fa(name = "clock", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "dollar-sign", fill = "lightgrey")` `r fa(name = "dollar-sign", fill = "lightgrey")` `r fa(name = "dollar-sign", fill = "lightgrey")`
+:::
+:::
+
+::: {.r-stack .center-h}
+![](edit_Rd.png){width="70%"}
+
+::: fragment
+![](PR_Rd.png){width="70%"}
+:::
+:::
+
+<https://contributor.r-project.org/rdevguide/FixBug.html#using-a-git-mirror>
+
+## Contributing to Code with the R Dev Container
+
+::: columns
+::: {.column .center-h width="33%"}
+`r fa(name = "award", fill = "black")` `r fa(name = "award", fill = "black")` `r fa(name = "award", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "clock", fill = "black")` `r fa(name = "clock", fill = "black")` `r fa(name = "clock", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "dollar-sign", fill = "lightgrey")` `r fa(name = "dollar-sign", fill = "lightgrey")` `r fa(name = "dollar-sign", fill = "lightgrey")`
+:::
+:::
+
+::: {.r-stack .center-h}
+![](edit_in_devcontainer.png){width="100%"}
+
+::: fragment
+![](svn_diff_askyesno.png){width="100%"}
+:::
+
+::: fragment
+![](modified_askYesNo.png){width="100%"}
+:::
+:::
+
+<https://contributor.r-project.org/r-dev-env/tutorials/contribution_workflow/>
+
+## Support for R Contributors: [contributor.r-project.org]{style="color:#0090af;"}
+
+::: columns
+::: {.column .center-h width="33%"}
+R Contributors Slack<br> [![](slack.png){width="45%"}](https://contributor.r-project.org/slack)
+:::
+
+::: {.column .center-h width="33%"}
+R Development Guide [![](r_dev_guide_new.png){width="75%"}](https://contributor.r-project.org/rdevguide/)
+:::
+
+::: {.column .center-h width="33%"}
+Tutorials [![](tutorial_slide.png){width="75%"}](https://contributor.r-project.org/tutorials/)
+:::
+:::
+
+::: center-h
+::: columns
+::: {.column .center-h width="33%"}
+Office hours [![](office-hours.png)](https://contributor.r-project.org/events/office-hours/)
+:::
+
+::: {.column .center-h width="66%"}
+R Contributor Events<br> [![](dev_day1.jpg){width="40%"} ![](dev_day2.jpg){width="40%"}](https://contributor.r-project.org/events/)
+:::
+:::
+:::
+
+# Contributing experience/expertise
+
+## Testing R before release
+
+::: columns
+::: {.column .center-h width="33%"}
+`r fa(name = "award", fill = "black")` `r fa(name = "award", fill = "lightgrey")` `r fa(name = "award", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "clock", fill = "black")` `r fa(name = "clock", fill = "lightgrey")` `r fa(name = "clock", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "dollar-sign", fill = "lightgrey")` `r fa(name = "dollar-sign", fill = "lightgrey")` `r fa(name = "dollar-sign", fill = "lightgrey")`
+:::
+:::
+
+Help by testing:
+
+-   Your own programs and workflows
+
+-   Your special ways of installing or setting up R
+
+-   Things that interact with external libraries
+
+-   Interactive R packages
+
+<https://blog.r-project.org/2021/04/28/r-can-use-your-help-testing-r-before-release>
+
+## Reporting bugs
+
+::: columns
+::: {.column .center-h width="33%"}
+`r fa(name = "award", fill = "black")` `r fa(name = "award", fill = "lightgrey")` `r fa(name = "award", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "clock", fill = "black")` `r fa(name = "clock", fill = "lightgrey")` `r fa(name = "clock", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "dollar-sign", fill = "lightgrey")` `r fa(name = "dollar-sign", fill = "lightgrey")` `r fa(name = "dollar-sign", fill = "lightgrey")`
+:::
+:::
+
+Reporting any bugs you discover helps maintain R to a high standard
+
+-   Bugs and wishlist items are posted on R's Bugzilla
+
+-   Include a minimal reproducible example (reprex) using base R packages and data
+
+<https://contributor.r-project.org/rdevguide/ReportingBugs.html>
+
+::: notes
+make column with picture of bugzilla report form?
+:::
+
+## Reviewing bug reports
+
+::: columns
+::: {.column .center-h width="33%"}
+`r fa(name = "award", fill = "black")` `r fa(name = "award", fill = "black")` `r fa(name = "award", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "clock", fill = "black")` `r fa(name = "clock", fill = "black")` `r fa(name = "clock", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "dollar-sign", fill = "lightgrey")` `r fa(name = "dollar-sign", fill = "lightgrey")` `r fa(name = "dollar-sign", fill = "lightgrey")`
+:::
+:::
+
+Reviewing bug reports can help them progress to being closed
+
+-   Reproducing the bug (on different R versions, platforms, ...)
+-   Simplifying the reprex
+-   Analysing the root cause
+-   Discussing whether/how to fix
+
+<https://blog.r-project.org/2019/10/09/r-can-use-your-help-reviewing-bug-reports>
+
+## Contributing to a working group
+
+::: columns
+::: {.column .center-h width="33%"}
+`r fa(name = "award", fill = "black")` `r fa(name = "award", fill = "black")` `r fa(name = "award", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "clock", fill = "black")` `r fa(name = "clock", fill = "black")` `r fa(name = "clock", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "dollar-sign", fill = "lightgrey")` `r fa(name = "dollar-sign", fill = "lightgrey")` `r fa(name = "dollar-sign", fill = "lightgrey")`
+:::
+:::
+
+-   [R Contribution Working Group](https://contributor.r-project.org/working-group)
+-   [Forwards](https://forwards.github.io/)
+-   [R Consortium Working Groups](https://www.r-consortium.org/all-projects/isc-working-groups), e.g.
+    -   Multilingual R Documentation
+    -   R7 Package
+    -   R Repositories
+
+# Contributing financially
+
+## As an organization
+
+::: columns
+::: {.column .center-h width="33%"}
+`r fa(name = "award", fill = "lightgrey")` `r fa(name = "award", fill = "lightgrey")` `r fa(name = "award", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "clock", fill = "lightgrey")` `r fa(name = "clock", fill = "lightgrey")` `r fa(name = "clock", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "dollar-sign", fill = "black")` `r fa(name = "dollar-sign", fill = "black")` `r fa(name = "dollar-sign", fill = "black")`
+:::
+:::
+
+-   [R Consortium membership](https://www.r-consortium.org/about/join)
+    -   Platinum: \$100k, Silver: \$25k, Small business/non-profit: \$10k
+    -   Funds key infrastructure projects and community events
+-   [R Foundation membership](https://www.r-project.org/foundation/donations.html)
+    -   Patron: €€€, Benefactor: €500, Institution: €250
+    -   Funds support for R Core, CRAN, R Journal, useR!, R Dev Days
+-   Other
+    -   Employee time for contribution
+    -   Sponsoring/hosting events
+
+## As an individual
+
+::: columns
+::: {.column .center-h width="33%"}
+`r fa(name = "award", fill = "lightgrey")` `r fa(name = "award", fill = "lightgrey")` `r fa(name = "award", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "clock", fill = "lightgrey")` `r fa(name = "clock", fill = "lightgrey")` `r fa(name = "clock", fill = "lightgrey")`
+:::
+
+::: {.column .center-h width="33%"}
+`r fa(name = "dollar-sign", fill = "black")` `r fa(name = "dollar-sign", fill = "lightgrey")` `r fa(name = "dollar-sign", fill = "lightgrey")`
+:::
+:::
+
+-   [R Foundation](https://www.r-project.org/foundation/donations.html)
+    -   Individual membership: €25 or one-off donation
+-   [R Project Open Collective](https://opencollective.com/the-r-project-collective)
+    -   Backer: \$5/month or one-off donation
+    -   Funds small projects: R Development Guide, useR! Infoboard
+
+## Summary
+
+::: {columns}
+::: {.column .fragment .center-h .col-box1 width="32%"}
+-   Low input
+    -   Message translation
+    -   Documentation fixes
+    -   Testing R
+    -   Reporting bugs
+    -   Individual donation
+:::
+
+::: {.column .fragment .center-h .col-box2 width="32%"}
+-   Medium input
+    -   Code fixes
+    -   Reviewing bugs
+    -   Working group
+:::
+
+::: {.column .fragment .center-h .col-box3 width="32%"}
+-   High input
+    -   Institution-level donation
+:::
+:::
+
+##  {#qr data-menu-title="QR code"}
+
+QR code to this presentation
+
+## Links
+
+::: columns
+::: {.smaller70}
+::: {.column width="33%"}
+Contributing to the codebase
+
+ - [Weblate YouTube tutorial](https://youtu.be/ABdyZW8yGS4) 
+ - [Contribution via git mirror](https://contributor.r-project.org/rdevguide/FixBug.html#using-a-git-mirror) 
+ - [Contribution via R Dev Container](https://contributor.r-project.org/r-dev-env/tutorials/contribution_workflow/) 
+ - [R Contributors Slack](https://contributor.r-project.org/slack) 
+ - [R Dev Guide](https://contributor.r-project.org/rdevguide/) 
+ - [Contributor tutorials](https://contributor.r-project.org/tutorials/) 
+ - [Office hours](https://contributor.r-project.org/events/office-hours/) 
+ - [R Contributor Events](https://contributor.r-project.org/events) 
+ 
+:::
+::: {.column width="33%"}
+Contributing expertise/experience
+
+ - [Testing R before release](https://blog.r-project.org/2021/04/28/r-can-use-your-help-testing-r-before-release) 
+ - [Reporting bugs](https://contributor.r-project.org/rdevguide/ReportingBugs.html) 
+ - [Reviewing bugs](https://blog.r-project.org/2019/10/09/r-can-use-your-help-reviewing-bug-reports) 
+ - [R Contribution Working Group](https://contributor.r-project.org/working-group) 
+ - [Forwards](https://forwards.github.io/) 
+ - [R Consortium Working Groups](https://www.r-consortium.org/all-projects/isc-working-groups)
+ 
+:::
+::: {.column width="33%"}
+Contributing financially
+
+ - [R Consortium membership](https://www.r-consortium.org/about/join) 
+ - [R Foundation membership](https://www.r-project.org/foundation/donations.html) 
+ - [R Project Open Collective](https://opencollective.com/the-r-project-collective)
+ 
+:::
+:::
+:::
+
+```{=html}
+<!-- needs to be last chunk of presentation otherwise creates an extra slide -->
+<!-- requires Quarto v1.3 -->
+<!-- tint80 for border, tint20 for title -->
+<!-- this should hopefully no longer be necessary in a future version of Quarto -->
+<!-- https://github.com/quarto-dev/quarto-cli/issues/5038 -->
+<style type="text/css">
+div.callout-note {
+  border-left-color: #00A9CE !important;
+}
+
+div.callout-note.callout-style-default .callout-title {
+  background-color: #B3E5F0 !important;
+}
+
+div.callout-warning {
+  border-left-color: #CB333B !important;
+}
+
+div.callout-warning.callout-style-default .callout-title {
+  background-color: #EEC3C3 !important;
+}
+
+div.callout-tip {
+  border-left-color: #6DCDB8 !important;
+}
+
+div.callout-tip.callout-style-default .callout-title {
+  background-color: #D3F0EB !important;
+}
+
+div.callout-important {
+  border-left-color: #F1BE48 !important;
+}
+
+div.callout-important.callout-style-default .callout-title {
+  background-color: #FAECC8 !important;
+}
+
+div.callout-caution {
+  border-left-color: #E87722 !important;
+}
+
+div.callout-caution.callout-style-default .callout-title {
+  background-color: #F8D5BC !important;
+}
+</style>
+```
