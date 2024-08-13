@@ -409,7 +409,7 @@ Office hours [![](office-hours.png)](https://contributor.r-project.org/events/of
 :::
 
 ::: {.column .center-h width="66%"}
-R Contributor Events<br> [![](dev_day1.jpg){width="40%"} ![](dev_day2.jpg){width="40%"}](https://contributor.r-project.org/events/)
+R Dev Days<br> [![](dev_day1.jpg){width="40%"} ![](dev_day2.jpg){width="40%"}](https://contributor.r-project.org/events/)
 :::
 :::
 :::
@@ -541,12 +541,12 @@ Reviewing bug reports can help them progress to being closed
 -   [R Consortium membership](https://www.r-consortium.org/about/join)
     -   Platinum: \$100k, Silver: \$25k, Small business/non-profit: \$10k
     -   Funds key infrastructure projects and community events
+    
+::: {.fragment}
 -   [R Foundation membership](https://www.r-project.org/foundation/donations.html)
     -   Patron: €€€, Benefactor: €500, Institution: €250
     -   Funds support for R Core, CRAN, R Journal, useR!, R Dev Days
--   Other
-    -   Employee time for contribution
-    -   Sponsoring/hosting events
+:::
 
 ## As an individual
 
@@ -574,7 +574,7 @@ Reviewing bug reports can help them progress to being closed
 
 ::: {columns}
 ::: {.column .fragment .center-h .col-box1 width="32%"}
--   Low input
+-   Low barrier
     -   Message translation
     -   Documentation fixes
     -   Testing R
@@ -583,14 +583,14 @@ Reviewing bug reports can help them progress to being closed
 :::
 
 ::: {.column .fragment .center-h .col-box2 width="32%"}
--   Medium input
+-   Medium barrier
     -   Code fixes
     -   Reviewing bugs
     -   Working group
 :::
 
 ::: {.column .fragment .center-h .col-box3 width="32%"}
--   High input
+-   High barrier
     -   Institution-level donation
 :::
 :::
